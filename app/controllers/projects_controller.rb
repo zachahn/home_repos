@@ -1,5 +1,10 @@
 class ProjectsController < ApplicationController
   def index
-    @projects = Project.where(export: true)
+    @projects =
+      if current_user.admin?
+        Project.all
+      else
+        Project.where(export: true)
+      end
   end
 end

@@ -1,7 +1,14 @@
 FactoryBot.define do
   factory :user do
-    email "MyString"
-    password_digest "MyString"
-    expires_at "2018-01-27 11:05:24"
+    sequence :email do |n|
+      "hello#{n}@example.com"
+    end
+    password "password"
+    expires_at nil
+    admin false
+
+    trait :admin do
+      admin true
+    end
   end
 end
