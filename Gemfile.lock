@@ -148,6 +148,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
     rubyzip (1.2.1)
+    rugged (0.26.0)
     sass (3.5.5)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -207,6 +208,7 @@ DEPENDENCIES
   puma (~> 3.7)
   rails (~> 5.1.4)
   rubocop
+  rugged
   sass-rails (~> 5.0)
   selenium-webdriver
   the_bath_of_zahn (~> 0.0.5)

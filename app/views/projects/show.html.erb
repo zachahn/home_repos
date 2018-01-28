@@ -1,0 +1,8 @@
+<table>
+  <% @tree.each do |obj| %>
+    <tr>
+      <td><%= obj[:type] %></td>
+      <td><%= obj[:name] %></td>
+    </tr>
+  <% end %>
+</table>

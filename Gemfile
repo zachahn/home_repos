@@ -15,6 +15,7 @@ gem "jbuilder", "~> 2.5"
 gem "bootsnap", require: false
 gem "bcrypt", "~> 3.1.7"
 gem "pry-rails"
+gem "rugged"
 
 group :development, :test do
   gem "pry-byebug"

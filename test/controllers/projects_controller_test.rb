@@ -30,15 +30,23 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_dont_show_if_not_export
-    FactoryBot.create(:project, :private, name: "foo_bar")
+    FactoryBot.create(:project, :private, name: "one_commit")
     admin = FactoryBot.create(:user, :admin)
 
     begin
-      get(project_url(name: "foo_bar"))
+      get(project_url(name: "one_commit"))
     rescue ActionController::RoutingError
     end
 
     post(session_url, params: { email: admin.email, password: admin.password })
-    get(project_url(name: "foo_bar"))
+    get(project_url(name: "one_commit"))
+  end
+
+  def test_show_repo_root
+    FactoryBot.create(:project, name: "one_commit")
+
+    get(project_url(name: "one_commit"))
+
+    assert_match(/first\.txt/, @response.body)
   end
 end

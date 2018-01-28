@@ -14,4 +14,11 @@
 #
 
 class Project < ApplicationRecord
+  def path
+    File.join(Root.path, "#{name}.git")
+  end
+
+  def repo
+    Rugged::Repository.new(path)
+  end
 end

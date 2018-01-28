@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+# rubocop:disable Metrics/MethodLength
+
+require "bundler/setup"
+require "dotenv"
+require "pry"
+require "rugged"
+
+Dotenv.load(".env.test")
+
+@root =
+  File.expand_path(
+    File.join("..", ENV["REPOS_ROOT_PATH"]),
+    __dir__
+  )
+
+def run
+  create_repo "one_commit"
+  create_file "one_commit", "first.txt", message: "First and last commit" do
+    "yeah!\n"
+  end
+end
+
+def create_file(name, path, contents = nil, message:)
+  contents ||= yield
+  repo = open_repo(name)
+
+  currently "Creating commit `#{message}`"
+
+  if !repo.empty?
+    return status "Already done"
+  end
+
+  blob_oid = repo.write(contents, :blob)
+  tree = create_tree repo do
+    [
+      { type: :blob, name: path, oid: blob_oid },
+    ]
+  end
+
+  create_commit(repo, tree, message: message)
+  status "OK"
+end
+
+def create_tree(repo, objs = nil)
+  objs ||= yield
+  tree_builder = Rugged::Tree::Builder.new(repo)
+
+  objs.each do |obj|
+    tree_builder << {
+      type: obj[:type],
+      name: obj[:name],
+      oid: obj[:oid],
+      filemode: obj[:type] == :blob ? 0o100644 : 0o100755,
+    }
+  end
+
+  tree_builder.write
+end
+
+def create_commit(repo, tree, message:)
+  Rugged::Commit.create(
+    repo,
+    tree: tree,
+    message: message,
+    parents: repo.empty? ? [] : [repo.head.target].compact,
+    update_ref: "HEAD"
+  )
+end
+
+def create_repo(name)
+  currently "Creating `#{filepath(name)}`..."
+
+  if File.directory?(filepath(name))
+    status "Already done"
+    return
+  end
+
+  Rugged::Repository.init_at(filepath(name), :bare)
+  status "OK"
+end
+
+def open_repo(name)
+  Rugged::Repository.new(filepath(name))
+end
+
+def filepath(name)
+  File.join(@root, "#{name}.git")
+end
+
+def currently(msg)
+  puts "==> #{msg}"
+end
+
+def status(msg)
+  puts "... #{msg}"
+end
+
+run
