@@ -21,4 +21,8 @@ class Project < ApplicationRecord
   def repo
     Rugged::Repository.new(path)
   end
+
+  def to_param
+    name
+  end
 end
