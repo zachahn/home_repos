@@ -25,4 +25,5 @@ end
 group :development do
   gem "rubocop"
   gem "the_bath_of_zahn", "~> 0.0.5"
+  gem "who_am_i"
 end
