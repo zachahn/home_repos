@@ -14,6 +14,7 @@ gem "turbolinks", "~> 5"
 gem "jbuilder", "~> 2.5"
 gem "bootsnap", require: false
 gem "bcrypt", "~> 3.1.7"
+gem "pry-rails"
 
 group :development, :test do
   gem "pry-byebug"
