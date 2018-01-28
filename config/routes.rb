@@ -5,6 +5,5 @@ Rails.application.routes.draw do
     resources :commits, param: :hash, only: [:show]
     resources :branches, param: :name, only: [:index]
   end
-  resources :users
   resource :session, only: %i[create destroy]
 end
