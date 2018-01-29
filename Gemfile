@@ -16,6 +16,7 @@ gem "bootsnap", require: false
 gem "bcrypt", "~> 3.1.7"
 gem "pry-rails"
 gem "rugged"
+gem "proc_party"
 
 group :development, :test do
   gem "pry-byebug"

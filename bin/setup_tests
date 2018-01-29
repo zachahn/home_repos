@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
 
 require "bundler/setup"
 require "dotenv"
@@ -19,6 +20,14 @@ def run
   create_file "one_commit", "first.txt", message: "First and last commit" do
     "yeah!\n"
   end
+
+  create_repo "two_commits"
+  create_file "two_commits", "README.md", message: "Add readme" do
+    "# Woo!\n"
+  end
+  create_file "two_commits", "subdir/README.txt", message: "Add a subdir" do
+    "== More reading material!\n"
+  end
 end
 
 def create_file(name, path, contents = nil, message:)
@@ -27,35 +36,41 @@ def create_file(name, path, contents = nil, message:)
 
   currently "Creating commit `#{message}`"
 
-  if !repo.empty?
+  if commit_exists?(repo, message: message)
     return status "Already done"
   end
 
   blob_oid = repo.write(contents, :blob)
-  tree = create_tree repo do
-    [
-      { type: :blob, name: path, oid: blob_oid },
-    ]
+
+  index = repo.index
+
+  if !repo.empty?
+    index.read_tree(repo.head.target.tree)
   end
+
+  index.add(path: path, oid: blob_oid, mode: 0o100644)
+
+  tree = index.write_tree(repo)
 
   create_commit(repo, tree, message: message)
   status "OK"
 end
 
-def create_tree(repo, objs = nil)
-  objs ||= yield
-  tree_builder = Rugged::Tree::Builder.new(repo)
-
-  objs.each do |obj|
-    tree_builder << {
-      type: obj[:type],
-      name: obj[:name],
-      oid: obj[:oid],
-      filemode: obj[:type] == :blob ? 0o100644 : 0o100755,
-    }
+def commit_exists?(repo, message:)
+  master_head = repo.references["refs/heads/master"]
+  if master_head.nil?
+    return false
   end
 
-  tree_builder.write
+  walker = Rugged::Walker.new(repo)
+  walker.push(master_head.target_id)
+  walker.each do |c|
+    if c.message == message
+      return true
+    end
+  end
+
+  false
 end
 
 def create_commit(repo, tree, message:)

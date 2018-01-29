@@ -1,0 +1,12 @@
+<% if @object.type == :blob %>
+  <%= @object.content %>
+<% elsif @object.type == :tree %>
+  <table>
+    <% @object.each do |obj| %>
+      <tr>
+        <td><%= obj[:type] %></td>
+        <td><%= obj[:name] %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
