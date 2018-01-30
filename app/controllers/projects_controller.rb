@@ -9,12 +9,11 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project = Project.find_by!(name: params[:name])
+    @project =
+      FindProjectWithPermissions.new.call(params[:name], current_user)
 
-    if !AccessControl.new(@project).readable?(current_user)
-      raise ActionController::RoutingError, "Project not found"
-    end
+    @object = @project.repo.branches["master"].target.tree
 
-    @tree = @project.repo.branches["master"].target.tree
+    render "objects/show"
   end
 end
