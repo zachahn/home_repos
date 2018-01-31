@@ -16,6 +16,8 @@ Dotenv.load(".env.test")
   )
 
 def run
+  create_repo "zero_commits"
+
   create_repo "one_commit"
   create_file "one_commit", "first.txt", message: "First and last commit" do
     "yeah!\n"

@@ -7,6 +7,10 @@ class DigObjectFromCommit
   end
 
   def call(path)
+    if @repo.empty?
+      return
+    end
+
     recurse(path, @commit.tree)
   end
 

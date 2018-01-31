@@ -56,4 +56,16 @@ class ObjectsControllerTest < ActionDispatch::IntegrationTest
     assert_response(:success)
     assert_match(/README\.txt/, @response.body)
   end
+
+  def test_empty_repository
+    FactoryBot.create(:project, name: "zero_commits")
+    object_url = project_object_url(
+      project_name: "zero_commits",
+      reference: "master",
+      path: "subdir"
+    )
+
+    get(object_url)
+    assert_response(:success)
+  end
 end

@@ -32,6 +32,10 @@ class ObjectView
   end
 
   def to_partial_path
+    if repo.empty?
+      return "objects/empty"
+    end
+
     "objects/#{object.type}"
   end
 
