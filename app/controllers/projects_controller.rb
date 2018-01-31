@@ -9,10 +9,14 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @project =
+    project =
       FindProjectWithPermissions.new.call(params[:name], current_user)
 
-    @object = @project.repo.branches["master"].target.tree
+    @object_view = ObjectView.new(
+      project: project,
+      committish: "master",
+      path: nil
+    )
 
     render "objects/show"
   end

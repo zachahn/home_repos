@@ -1,12 +1,12 @@
 class ObjectsController < ApplicationController
   def show
-    @project =
+    project =
       FindProjectWithPermissions.new.call(params[:project_name], current_user)
 
-    repo = @project.repo
-
-    commit = DigCommitFromReference.new(repo).call(params[:reference])
-
-    @object = DigObjectFromCommit.new(repo, commit).call(params[:path])
+    @object_view = ObjectView.new(
+      project: project,
+      committish: params[:reference],
+      path: params[:path]
+    )
   end
 end
