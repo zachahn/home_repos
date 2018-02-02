@@ -17,6 +17,9 @@ gem "bcrypt", "~> 3.1.7"
 gem "pry-rails"
 gem "rugged"
 gem "proc_party"
+gem "bourbon"
+gem "neat", github: "thoughtbot/neat" # 2.1 contains a deprecation error
+gem "rouge"
 
 group :development, :test do
   gem "pry-byebug"

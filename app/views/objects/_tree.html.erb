@@ -1,8 +1,12 @@
-<table>
+<div class="tree">
   <% @object_view.each_tree_item do |obj| %>
-    <tr>
-      <td><%= obj[:type] %></td>
-      <td><%= link_to(obj[:name], project_object_path(obj[:path_params])) %></td>
-    </tr>
+    <div class="tree__item">
+      <div class="tree__item__icon">
+        <%= image_tag(obj[:icon]) %>
+      </div>
+      <div class="tree__item__name">
+        <%= link_to(obj[:name], project_object_path(obj[:path_params])) %>
+      </div>
+    </div>
   <% end %>
-</table>
+</div>

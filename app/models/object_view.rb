@@ -5,6 +5,19 @@ class ObjectView
     @path = path || ""
   end
 
+  attr_reader :committish
+  attr_reader :path
+  attr_reader :project
+
+  def breadcrumb
+    @breadcrumb ||=
+      Breadcrumb.new(
+        project: @project,
+        path: @path,
+        committish: @committish
+      )
+  end
+
   def commit
     @commit ||= DigCommitFromReference.new(repo).call(@committish)
   end
@@ -19,6 +32,15 @@ class ObjectView
 
   def content
     object.content
+  end
+
+  def html_content
+    most_likely_lexer =
+      Rouge::Lexer.guesses(filename: @path, source: content).first ||
+      Rouge::Lexers::PlainText
+
+    formatter = Rouge::Formatters::HTML.new
+    formatter.format(most_likely_lexer.new.lex(content))
   end
 
   def each_tree_item
@@ -42,6 +64,7 @@ class ObjectView
   def obj_hash(obj)
     {
       type: obj[:type],
+      icon: obj_icon(obj[:type]),
       name: obj[:name],
       path_params: {
         project_name: @project.name,
@@ -52,6 +75,14 @@ class ObjectView
   end
 
   private
+
+  def obj_icon(type)
+    if type == :blob
+      "file.svg"
+    else
+      "folder.svg"
+    end
+  end
 
   def obj_fullpath(basename)
     if @path == ""
