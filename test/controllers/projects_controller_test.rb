@@ -20,7 +20,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     FactoryBot.create(:project, :private, name: "baz_project")
     admin = FactoryBot.create(:user, :admin)
 
-    post(session_url, params: { email: admin.email, password: admin.password })
+    login_as(admin)
     get(projects_url)
 
     assert_response(:success)
@@ -38,7 +38,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     rescue ActionController::RoutingError
     end
 
-    post(session_url, params: { email: admin.email, password: admin.password })
+    login_as(admin)
     get(project_url(name: "one_commit"))
   end
 

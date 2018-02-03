@@ -4,21 +4,23 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   def test_log_in_valid_user
     user = FactoryBot.create(:user, email: "hi@example.com", password: "hello")
 
-    post(session_url, params: { email: "hi@example.com", password: "hello" })
+    login_as(user)
 
     assert_equal(user.id, controller.session[:user_id])
   end
 
   def test_log_in_invalid_user
-    post(session_url, params: { email: "dne@example.com", password: "hello" })
+    fake_user = OpenStruct.new(email: "dne@example.com", password: "hello")
+
+    login_as(fake_user)
 
     assert_nil(controller.session[:user_id])
   end
 
   def test_log_out
-    FactoryBot.create(:user, email: "hi@example.com", password: "hello")
+    user = FactoryBot.create(:user, email: "hi@example.com", password: "hello")
 
-    post(session_url, params: { email: "hi@example.com", password: "hello" })
+    login_as(user)
     delete(session_url)
 
     assert_nil(controller.session[:user_id])

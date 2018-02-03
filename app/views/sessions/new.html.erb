@@ -1,0 +1,17 @@
+<div class="layout">
+  <div class="layout__12">
+    <%= form_for(@login, url: session_path) do |f| %>
+      <div>
+        <%= f.label :email %>
+        <%= f.text_field :email, class: "login__input" %>
+      </div>
+      <div>
+        <%= f.label :password %>
+        <%= f.password_field :password, class: "login__input" %>
+      </div>
+      <div>
+        <%= f.submit "Login" %>
+      </div>
+    <% end %>
+  </div>
+</div>

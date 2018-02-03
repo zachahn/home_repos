@@ -95,6 +95,10 @@ img {
   overflow-x: scroll;
 }
 
+.login__input {
+  font-size: 1rem;
+}
+
 .projects {
   list-style: none;
 }
@@ -102,9 +106,17 @@ img {
 .masthead {
   margin-top: 1rem;
   margin-bottom: 2rem;
+  list-style: none;
 
   a::after {
     border-bottom: none;
+  }
+
+  li {
+    display: inline-block;
+  }
+  li + li {
+    margin-left: 1rem;
   }
 }
 .masthead__title {

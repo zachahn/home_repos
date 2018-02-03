@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: "projects#index"
-  resource :session, only: %i[create destroy]
+  resource :session, only: %i[new create destroy]
   resources :projects, param: :name, path: "/" do
     get "objects/:reference(/*path)", to: "objects#show", as: :object,
       constraints: { path: /.*/ }, defaults: { format: :html }, format: false
