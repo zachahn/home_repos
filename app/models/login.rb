@@ -10,7 +10,12 @@ class Login
   end
 
   def user
-    @user ||= User.find_by(email: @email) || Guest.new
+    @user ||=
+      if authenticate?
+        User.find_by(email: @email)
+      else
+        Guest.new
+      end
   end
 
   def authenticate?
