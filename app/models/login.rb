@@ -14,6 +14,14 @@ class Login
   end
 
   def authenticate?
-    user.authenticate(@password)
+    if @authenticated.nil?
+      @authenticated = credentials.any? { |c| c.authenticate(@password) }
+    end
+
+    @authenticated
+  end
+
+  def credentials
+    @credentials ||= Credential.where(email: @email)
   end
 end

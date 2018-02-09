@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180128030921) do
+ActiveRecord::Schema.define(version: 20180209022022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_tokens", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_access_tokens_on_user_id"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.string "name"
@@ -31,5 +39,20 @@ ActiveRecord::Schema.define(version: 20180128030921) do
     t.datetime "updated_at", null: false
     t.boolean "admin"
   end
+
+  add_foreign_key "access_tokens", "users"
+
+  create_view "credentials",  sql_definition: <<-SQL
+      SELECT users.id AS user_id,
+      users.email,
+      access_tokens.password_digest
+     FROM (access_tokens
+       JOIN users ON ((access_tokens.user_id = users.id)))
+  UNION
+   SELECT users.id AS user_id,
+      users.email,
+      users.password_digest
+     FROM users;
+  SQL
 
 end

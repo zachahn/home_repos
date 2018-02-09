@@ -20,6 +20,7 @@ gem "proc_party"
 gem "bourbon"
 gem "neat", github: "thoughtbot/neat" # 2.1 contains a deprecation error
 gem "rouge"
+gem "scenic"
 
 group :development, :test do
   gem "pry-byebug"
@@ -32,5 +33,5 @@ end
 group :development do
   gem "rubocop"
   gem "the_bath_of_zahn", "~> 0.0.5"
-  gem "who_am_i"
+  gem "who_am_i", github: "zachahn/who_am_i"
 end

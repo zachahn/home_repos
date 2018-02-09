@@ -25,4 +25,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil(controller.session[:user_id])
   end
+
+  def test_log_in_with_token
+    user = FactoryBot.create(:user, email: "hi@example.com", password: "hello")
+    token = FactoryBot.create(:access_token, user: user, password: "!key!")
+
+    token_login_as(user, token)
+
+    assert_equal(user.id, controller.session[:user_id])
+  end
 end

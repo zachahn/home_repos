@@ -13,7 +13,15 @@ end
 module ActionDispatch
   class IntegrationTest
     def login_as(user)
-      login_params = { email: user.email, password: user.password }
+      manual_login_with(user.email, user.password)
+    end
+
+    def token_login_as(user, access_token)
+      manual_login_with(user.email, access_token.password)
+    end
+
+    def manual_login_with(email, password)
+      login_params = { email: email, password: password }
       post(session_url, params: { login: login_params })
     end
   end
