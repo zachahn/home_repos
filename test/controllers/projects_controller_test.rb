@@ -49,4 +49,14 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
     assert_match(/first\.txt/, @response.body)
   end
+
+  def test_show_private_project_to_user_with_access
+    project = FactoryBot.create(:project, :private, name: "one_commit")
+    user = FactoryBot.create(:user)
+    Permission.create!(user: user, project: project)
+
+    login_as(user)
+    get(project_url(name: "one_commit"))
+    assert_match(/first\.txt/, @response.body)
+  end
 end

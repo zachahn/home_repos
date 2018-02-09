@@ -12,6 +12,10 @@ class AccessControl
       return true
     end
 
+    if user.permissions.where(project: @project, read: true)
+      return true
+    end
+
     false
   end
 end

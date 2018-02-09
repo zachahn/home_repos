@@ -4,6 +4,10 @@ class Guest
 
   has_secure_password
 
+  def permissions
+    Permission.none
+  end
+
   def admin?
     false
   end
