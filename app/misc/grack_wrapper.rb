@@ -27,7 +27,7 @@ class GrackWrapper
     access_control = AccessControl.new(@project)
 
     Grack::App.new(
-      root: Root.path,
+      root: Setting.repositories_path,
       allow_push: access_control.writable?(@user),
       allow_pull: access_control.readable?(@user),
       git_adapter_factory: -> { Grack::GitAdapter.new }

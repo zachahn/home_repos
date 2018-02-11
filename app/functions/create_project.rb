@@ -19,7 +19,7 @@ class CreateProject
 
   def fake_project
     OpenStruct.new(
-      path: File.join(Root.path, "#{@params[:name]}.git")
+      path: File.join(Setting.repositories_path, "#{@params[:name]}.git")
     )
   end
 end

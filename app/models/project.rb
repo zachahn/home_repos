@@ -18,7 +18,7 @@ class Project < ApplicationRecord
   validates :name, presence: true, format: /\A[a-zA-Z0-9_-]+\z/
 
   def path
-    File.join(Root.path, "#{name}.git")
+    File.join(Setting.repositories_path, "#{name}.git")
   end
 
   def repo

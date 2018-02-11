@@ -28,6 +28,6 @@ class CreateProjectTest < ActiveSupport::TestCase
     end
 
     assert_nil(Project.find_by(name: "lol"))
-    refute(File.exist?(File.join(Root.path, "lol.git")))
+    refute(File.exist?(File.join(Setting.repositories_path, "lol.git")))
   end
 end
