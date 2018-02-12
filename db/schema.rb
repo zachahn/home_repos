@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180218213027) do
+ActiveRecord::Schema.define(version: 20180218213250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20180218213027) do
     t.boolean "export"
     t.text "description"
     t.string "backup_name", null: false
+    t.datetime "backed_up_at"
     t.index ["name"], name: "index_projects_on_name", unique: true
   end
 

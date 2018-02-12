@@ -2,13 +2,14 @@
 #
 # Table name: projects
 #
-#   id             integer     not null, primary key
-#   name           string
-#   created_at     datetime    not null
-#   updated_at     datetime    not null
-#   export         boolean
-#   description    text
-#   backup_name    string      not null
+#   id              integer     not null, primary key
+#   name            string
+#   created_at      datetime    not null
+#   updated_at      datetime    not null
+#   export          boolean
+#   description     text
+#   backup_name     string      not null
+#   backed_up_at    datetime
 #
 # Indices:
 #
