@@ -8,6 +8,7 @@
 #   updated_at     datetime    not null
 #   export         boolean
 #   description    text
+#   backup_name    string      not null
 #
 # Indices:
 #

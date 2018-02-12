@@ -7,6 +7,8 @@ class CreateProject
 
   def call
     Project.create!(@params) do |project|
+      project.backup_name = SecureRandom.uuid
+
       CreateProjectRepository.new.call(project)
     end
   rescue
