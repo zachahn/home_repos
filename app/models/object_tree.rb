@@ -3,59 +3,58 @@ class ObjectTree
     @project = project
     @committish = committish
     @path = path
+    @index_interface =
+      ObjectIndexInterface.new(
+        project: @project,
+        committish: @committish,
+        path: @path
+      )
+  end
+
+  delegate :basename, to: :@index_interface
+  delegate :path_params, to: :@index_interface
+  delegate :object, to: :@index_interface
+
+  def icon
+    "folder"
   end
 
   def each_object
     object.each_tree do |tree|
-      yield(obj_hash(tree))
+      yield(object_representation(tree))
     end
 
     object.each_blob do |blob|
-      object_data = obj_hash(blob)
+      object_data = object_representation(blob)
       yield(object_data)
     end
   end
 
-  def obj_hash(obj)
-    {
-      type: obj[:type],
-      icon: obj_icon(obj[:type]),
-      name: obj[:name],
-      path_params: {
-        project_name: @project.name,
-        reference: @committish,
-        path: obj_fullpath(obj[:name]),
-      },
-    }
+  def object_representation(obj)
+    klass = type_to_class(obj[:type])
+
+    klass.new(
+      project: @project,
+      committish: @committish,
+      path: compute_fullpath(obj[:name])
+    )
   end
 
   private
 
-  def obj_fullpath(basename)
-    if @path == ""
-      basename
-    else
-      File.join(@path, basename)
-    end
-  end
-
-  def obj_icon(type)
+  def type_to_class(type)
     if type == :blob
-      "file"
+      ObjectBlob
     else
-      "folder"
+      ObjectTree
     end
   end
 
-  def repo
-    @repo ||= @project.repo
-  end
-
-  def commit
-    @commit ||= DigCommitFromReference.new(repo).call(@committish)
-  end
-
-  def object
-    @object ||= DigObjectFromCommit.new(repo, commit).call(@path)
+  def compute_fullpath(child)
+    if @path == ""
+      child
+    else
+      File.join(@path, child)
+    end
   end
 end

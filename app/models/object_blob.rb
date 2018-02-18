@@ -3,6 +3,20 @@ class ObjectBlob
     @project = project
     @committish = committish
     @path = path
+    @index_interface =
+      ObjectIndexInterface.new(
+        project: @project,
+        committish: @committish,
+        path: @path
+      )
+  end
+
+  delegate :basename, to: :@index_interface
+  delegate :path_params, to: :@index_interface
+  delegate :object, to: :@index_interface
+
+  def icon
+    "file"
   end
 
   def content
@@ -19,18 +33,6 @@ class ObjectBlob
   end
 
   private
-
-  def commit
-    @commit ||= DigCommitFromReference.new(repo).call(@committish)
-  end
-
-  def object
-    @object ||= DigObjectFromCommit.new(repo, commit).call(@path)
-  end
-
-  def repo
-    @repo ||= @project.repo
-  end
 
   def most_likely_lexer
     Rouge::Lexer.guesses(filename: @path, source: content).first
