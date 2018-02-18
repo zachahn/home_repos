@@ -18,6 +18,24 @@ class ObjectView
       )
   end
 
+  def blob
+    @blob ||=
+      ObjectBlob.new(
+        project: project,
+        committish: committish,
+        path: path
+      )
+  end
+
+  def tree
+    @tree ||=
+      ObjectTree.new(
+        project: project,
+        committish: committish,
+        path: path
+      )
+  end
+
   def commit
     @commit ||= DigCommitFromReference.new(repo).call(@committish)
   end
@@ -30,65 +48,11 @@ class ObjectView
     @repo ||= @project.repo
   end
 
-  def content
-    object.content
-  end
-
-  def html_content
-    most_likely_lexer =
-      Rouge::Lexer.guesses(filename: @path, source: content).first ||
-      Rouge::Lexers::PlainText
-
-    formatter = Rouge::Formatters::HTML.new
-    formatter.format(most_likely_lexer.new.lex(content))
-  end
-
-  def each_tree_item
-    object.each_tree do |tree|
-      yield(obj_hash(tree))
-    end
-
-    object.each_blob do |blob|
-      yield(obj_hash(blob))
-    end
-  end
-
   def to_partial_path
     if repo.empty?
       return "objects/empty"
     end
 
     "objects/#{object.type}"
-  end
-
-  def obj_hash(obj)
-    {
-      type: obj[:type],
-      icon: obj_icon(obj[:type]),
-      name: obj[:name],
-      path_params: {
-        project_name: @project.name,
-        reference: @committish,
-        path: obj_fullpath(obj[:name]),
-      },
-    }
-  end
-
-  private
-
-  def obj_icon(type)
-    if type == :blob
-      "file"
-    else
-      "folder"
-    end
-  end
-
-  def obj_fullpath(basename)
-    if @path == ""
-      basename
-    else
-      File.join(@path, basename)
-    end
   end
 end

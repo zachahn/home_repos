@@ -1,5 +1,5 @@
 <div class="tree">
-  <% @object_view.each_tree_item do |obj| %>
+  <% @object_view.tree.each_object do |obj| %>
     <div class="tree__item">
       <div class="tree__item__name">
         <%= feather_tag(obj[:icon]) %>
