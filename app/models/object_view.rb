@@ -78,9 +78,9 @@ class ObjectView
 
   def obj_icon(type)
     if type == :blob
-      "file.svg"
+      "feather/file.svg"
     else
-      "folder.svg"
+      "feather/folder.svg"
     end
   end
 
