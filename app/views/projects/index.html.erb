@@ -2,7 +2,11 @@
   <div class="layout__12">
     <ul class="projects">
       <% @projects.each do |project| %>
-        <li><%= link_to(project.name, project) %></li>
+        <li>
+          <%= render partial: "project_export_icon",
+            locals: { project: project } %>
+          <%= link_to(project.name, project) %>
+        </li>
       <% end %>
     </ul>
   </div>

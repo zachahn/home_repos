@@ -1,10 +1,8 @@
 <div class="tree">
   <% @object_view.each_tree_item do |obj| %>
     <div class="tree__item">
-      <div class="tree__item__icon">
-        <%= image_tag(obj[:icon]) %>
-      </div>
       <div class="tree__item__name">
+        <%= feather_tag(obj[:icon]) %>
         <%= link_to(obj[:name], project_object_path(obj[:path_params])) %>
       </div>
     </div>

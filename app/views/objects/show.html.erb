@@ -1,7 +1,10 @@
 <div class="layout">
   <div class="layout__12">
     <ul class="repo_header">
-      <li class="repo_header__project_name"><%= @object_view.breadcrumb.project_root %></li>
+      <li class="repo_header__project_name">
+        <%= render partial: "project_export_icon", locals: { project: @object_view.project } %>
+        <%= @object_view.breadcrumb.project_root %>
+      </li>
       <% @object_view.breadcrumb.each do |b| %>
         <li class="repo_header__separator">/</li>
         <li class="repo_header__breadcrumb"><%= b %></li>
