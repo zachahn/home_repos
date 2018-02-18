@@ -15,6 +15,9 @@
         <ul class="masthead">
           <li><h1 class="masthead__title"><%= link_to("HomeRepos", root_path) %></h1></li>
           <% if logged_in? %>
+            <% if current_user.admin? %>
+              <li><%= link_to("New project", new_project_path) %></li>
+            <% end %>
             <li><%= link_to("Log out", session_path, method: :delete) %></li>
           <% else %>
             <li><%= link_to("Log in", new_session_path) %></li>

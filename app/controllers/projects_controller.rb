@@ -20,4 +20,29 @@ class ProjectsController < ApplicationController
 
     render "objects/show"
   end
+
+  def new
+    if !current_user.admin?
+      redirect_to root_path
+      return
+    end
+
+    @project = Project.new
+  end
+
+  def create
+    @project = CreateProject.new(project_params).call
+
+    if @project.persisted?
+      redirect_to(@project)
+    else
+      render :new
+    end
+  end
+
+  private
+
+  def project_params
+    params.require(:project).permit(:name, :description, :export)
+  end
 end
