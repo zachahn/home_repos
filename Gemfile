@@ -23,6 +23,7 @@ gem "rouge"
 gem "scenic"
 gem "grack"
 gem "commonmarker"
+gem "delayed_job_active_record"
 
 group :development, :test do
   gem "pry-byebug"
