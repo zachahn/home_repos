@@ -3,6 +3,7 @@ class ObjectTree
     @project = project
     @committish = committish
     @path = path
+    @readme = nil
     @index_interface =
       ObjectIndexInterface.new(
         project: @project,
@@ -14,6 +15,8 @@ class ObjectTree
   delegate :basename, to: :@index_interface
   delegate :path_params, to: :@index_interface
   delegate :object, to: :@index_interface
+
+  attr_reader :readme
 
   def icon
     "folder"
@@ -27,6 +30,8 @@ class ObjectTree
     object.each_blob do |blob|
       object_data = object_representation(blob)
       yield(object_data)
+
+      @readme ||= check_if_readme(object_data)
     end
   end
 
@@ -41,6 +46,12 @@ class ObjectTree
   end
 
   private
+
+  def check_if_readme(object_data)
+    if object_data.basename =~ /\breadme\b/i
+      object_data
+    end
+  end
 
   def type_to_class(type)
     if type == :blob

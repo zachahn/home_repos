@@ -8,3 +8,7 @@
     </div>
   <% end %>
 </div>
+
+<% if @object_view.tree.readme %>
+  <%= @object_view.tree.readme.html_content %>
+<% end %>
