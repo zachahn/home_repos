@@ -159,6 +159,22 @@ img {
   vertical-align: middle;
 }
 
+.longform {
+  margin-top: 1rem;
+
+  p, h1, h2, h3, h4, h5, h6, ol, ul, pre, address, blockquote, dl, div, fieldset, form, table {
+    margin-bottom: 1rem;
+  }
+
+  ul, ol {
+    margin-left: 1.6rem;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
 .projects {
   list-style: none;
 }

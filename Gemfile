@@ -22,6 +22,7 @@ gem "neat", github: "thoughtbot/neat" # 2.1 contains a deprecation error
 gem "rouge"
 gem "scenic"
 gem "grack"
+gem "commonmarker"
 
 group :development, :test do
   gem "pry-byebug"

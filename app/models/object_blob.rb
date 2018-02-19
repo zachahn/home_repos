@@ -28,11 +28,31 @@ class ObjectBlob
   end
 
   def html_content
-    formatter = Rouge::Formatters::HTML.new
-    formatter.format(lexer.new.lex(content))
+    if lexer == Rouge::Lexers::Markdown
+      content_markdown
+    else
+      content_syntax_highlight
+    end
   end
 
   private
+
+  def content_markdown
+    doc = CommonMarker.render_doc(content)
+    renderer = CommonMarkerRouge.new
+
+    %(<div class="longform">).html_safe +
+      renderer.render(doc).html_safe +
+      "</div>".html_safe
+  end
+
+  def content_syntax_highlight
+    formatter = Rouge::Formatters::HTML.new
+
+    %(<pre class="highlight">).html_safe +
+      formatter.format(lexer.new.lex(content)).html_safe +
+      "</pre>".html_safe
+  end
 
   def most_likely_lexer
     Rouge::Lexer.guesses(filename: @path, source: content).first
