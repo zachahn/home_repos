@@ -32,7 +32,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "rubocop"
+  gem "rubocop", require: false
   gem "the_bath_of_zahn", "~> 0.0.5"
   gem "who_am_i", github: "zachahn/who_am_i"
 end
