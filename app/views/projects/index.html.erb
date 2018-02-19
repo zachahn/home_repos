@@ -6,6 +6,9 @@
           <%= render partial: "project_export_icon",
             locals: { project: project } %>
           <%= link_to(project.name, project) %>
+          <% if current_user.admin? %>
+            <%= link_to("Backup", project_backup_path(project), method: :post) %>
+          <% end %>
         </li>
       <% end %>
     </ul>

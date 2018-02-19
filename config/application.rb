@@ -6,6 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require "open3"
 require "grack/git_adapter"
 
 module HomeRepos

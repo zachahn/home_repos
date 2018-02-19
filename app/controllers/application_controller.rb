@@ -16,4 +16,10 @@ class ApplicationController < ActionController::Base
   def logged_in?
     !!session[:user_id]
   end
+
+  def admins_only
+    if !current_user.admin?
+      raise ActionController::RoutingError, "Must be admin"
+    end
+  end
 end
