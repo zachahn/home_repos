@@ -27,11 +27,11 @@
     </div>
     <div class="layout">
       <div class="layout__12">
-        <div class="flash_messages">
-          <% flash.each do |name, msg| %>
+        <% flash.each do |name, msg| %>
+          <div class="flash-message flash-message--<%= name %>">
             <%= msg %>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
     <%= yield %>

@@ -11,6 +11,8 @@
 $color-black: #111;
 $color-white: #fff;
 $color-superlight: #dedede;
+$color-pink: #f2ddde;
+$color-lightblue: #89abe3;
 
 $font-sans: "Helvetica Neue", "Helvetica", sans-serif;
 
@@ -100,6 +102,22 @@ img {
   padding-left: 15px;
   padding-right: 15px;
   border-color: $color-superlight;
+}
+
+.flash-message {
+  padding: 0.5rem;
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+}
+
+.flash-message--alert {
+  background-color: $color-pink;
+}
+
+.flash-message--notice {
+  background-color: $color-lightblue;
 }
 
 .footer {
