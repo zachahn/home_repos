@@ -24,13 +24,13 @@ gem "scenic"
 gem "grack"
 gem "commonmarker"
 gem "delayed_job_active_record"
+gem "dotenv-rails"
 
 group :development, :test do
   gem "pry-byebug"
   gem "capybara", "~> 2.13"
   gem "selenium-webdriver"
   gem "factory_bot_rails"
-  gem "dotenv-rails"
 end
 
 group :development do
