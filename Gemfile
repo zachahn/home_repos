@@ -21,7 +21,7 @@ gem "bourbon"
 gem "neat", github: "thoughtbot/neat" # 2.1 contains a deprecation error
 gem "rouge"
 gem "scenic"
-gem "grack"
+gem "grack", github: "zachahn/grack", branch: "customizeable_auth"
 gem "commonmarker"
 gem "delayed_job_active_record"
 gem "dotenv-rails"
