@@ -6,7 +6,10 @@ class Breadcrumb
   end
 
   def project_root
-    link_to(@project.name, project_path(@project))
+    link_to(
+      @project.name,
+      DetermineProjectCommittishRoot.new.call(@project, @committish)
+    )
   end
 
   def each
