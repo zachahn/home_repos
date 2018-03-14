@@ -21,7 +21,7 @@ class GitHttpInterfaceNonexportedTest < ApplicationSystemTestCase
   end
 
   def test_admins_can_read_and_write
-    admin = FactoryBot.create(:user, :admin, email: "admin", password: "p")
+    FactoryBot.create(:user, :admin, email: "admin", password: "p")
 
     assert(
       git_clone(git_url("one_commit.git", "admin", "p")),
@@ -50,7 +50,7 @@ class GitHttpInterfaceNonexportedTest < ApplicationSystemTestCase
   end
 
   def test_unpermitted_user_cannot_read_or_write
-    user = FactoryBot.create(:user, email: "user", password: "p")
+    FactoryBot.create(:user, email: "user", password: "p")
 
     refute(
       git_clone(git_url("one_commit.git", "user", "p")),

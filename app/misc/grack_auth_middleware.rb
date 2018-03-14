@@ -46,7 +46,7 @@ class GrackAuthMiddleware
 
   def not_found
     headers = {
-      "Content-Type" => "text/plain"
+      "Content-Type" => "text/plain",
     }
 
     [404, headers, ["Not found"]]
@@ -59,11 +59,6 @@ class GrackAuthMiddleware
     }
 
     [401, headers, ["Unauthorized"]]
-  end
-
-  def authenticator(username, password)
-    login = Login.new(email: email, password: password)
-    login.user
   end
 
   def require_authentication?(env, project)
