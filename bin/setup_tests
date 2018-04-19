@@ -30,9 +30,35 @@ def run
   create_file "two_commits", "subdir/README.txt", message: "Add a subdir" do
     "== More reading material!\n"
   end
+
+  create_repo "two_branches"
+  create_file "two_branches", "README.md", message: "Add readme" do
+    "# Cool!\n"
+  end
+  create_branch "two_branches", "second_branch", "HEAD"
+  create_file "two_branches", "CONTRIBUTING.md",
+    message: "Add contributing info", on_branch: "second_branch" do
+    "# :)\n"
+  end
+  create_file "two_branches", "READ_ME_TOO.md",
+    message: "Add another readme", on_branch: "master" do
+    "# I like files\n"
+  end
 end
 
-def create_file(name, path, contents = nil, message:)
+def create_branch(repo_name, branch_name, from)
+  repo = open_repo(repo_name)
+
+  currently "Creating branch `#{branch_name}`"
+
+  if repo.branches[branch_name]
+    return status "Already done"
+  end
+
+  repo.branches.create(branch_name, from)
+end
+
+def create_file(name, path, contents = nil, message:, on_branch: "HEAD")
   contents ||= yield
   repo = open_repo(name)
 
@@ -54,18 +80,20 @@ def create_file(name, path, contents = nil, message:)
 
   tree = index.write_tree(repo)
 
-  create_commit(repo, tree, message: message)
+  create_commit(repo, tree, message: message, on_branch: on_branch)
   status "OK"
 end
 
 def commit_exists?(repo, message:)
-  master_head = repo.references["refs/heads/master"]
-  if master_head.nil?
+  if repo.empty?
     return false
   end
 
   walker = Rugged::Walker.new(repo)
-  walker.push(master_head.target_id)
+  repo.references.map(&:target_id).each do |target_id|
+    walker.push(target_id)
+  end
+
   walker.each do |c|
     if c.message == message
       return true
@@ -75,13 +103,27 @@ def commit_exists?(repo, message:)
   false
 end
 
-def create_commit(repo, tree, message:)
+def create_commit(repo, tree, message:, on_branch: "HEAD")
+  parents =
+    if on_branch == "HEAD"
+      repo.empty? ? [] : [repo.head.target].compact
+    else
+      [repo.branches[on_branch].target].compact
+    end
+
+  ref =
+    if on_branch == "HEAD"
+      "HEAD"
+    else
+      repo.branches[on_branch].canonical_name
+    end
+
   Rugged::Commit.create(
     repo,
     tree: tree,
     message: message,
-    parents: repo.empty? ? [] : [repo.head.target].compact,
-    update_ref: "HEAD"
+    parents: parents,
+    update_ref: ref
   )
 end
 
