@@ -8,8 +8,7 @@ class DetermineProjectCommittishRoot
       return project_path(project)
     end
 
-    main_branch =
-      repo.references["HEAD"].target.name[%r{\Arefs/heads/(.*)\z}, 1]
+    main_branch = ExtractDefaultBranchFromRepo.new.call(repo)
 
     if main_branch == committish
       return project_path(project)
