@@ -1,1 +1,11 @@
 @import "_rouge_github";
+
+.highlight {
+  background-color: #fcfcfc;
+}
+
+// Lineno
+.highlight .gl {
+  text-align: right;
+  color: #b0b0b0;
+}
