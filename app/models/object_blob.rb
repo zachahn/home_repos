@@ -47,7 +47,8 @@ class ObjectBlob
   end
 
   def content_syntax_highlight
-    formatter = Rouge::Formatters::HTML.new
+    html_formatter = Rouge::Formatters::HTML.new
+    formatter = Rouge::Formatters::HTMLTable.new(html_formatter)
 
     %(<pre class="highlight">).html_safe +
       formatter.format(lexer.new.lex(content)).html_safe +
