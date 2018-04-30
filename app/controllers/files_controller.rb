@@ -5,8 +5,13 @@ class FilesController < ApplicationController
   end
 
   def show
-    @filenames =
-      ListAllFilesUnderTreeish.new(project.repo).call(params[:committish])
+    lister = ListAllFilesUnderTreeish.new(project.repo)
+    @filenames = lister.call(params[:committish]).map do |path|
+      {
+        name: path,
+        link: project_object_path(project, params[:committish], path),
+      }
+    end
   end
 
   private

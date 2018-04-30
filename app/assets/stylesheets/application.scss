@@ -104,6 +104,12 @@ img {
   border-color: $color-superlight;
 }
 
+.file-search {
+  li {
+    list-style-type: none;
+  }
+}
+
 .flash-message {
   padding: 0.5rem;
 

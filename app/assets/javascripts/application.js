@@ -12,4 +12,8 @@
 //
 //= require rails-ujs
 //= require turbolinks
+//= require jquery
+//= require fuse
+//= require preact.dev
+//= require filesearch
 //= require_tree .

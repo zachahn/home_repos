@@ -1,3 +1,8 @@
-<% @filenames.each do |filename| %>
-  <li><%= filename %></li>
-<% end %>
+<div class="layout">
+  <div class="layout__12">
+    <div
+      class="file-search"
+      data-fuzzy="<%= @filenames.to_json %>">
+    </div>
+  </div>
+</div>
