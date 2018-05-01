@@ -1,7 +1,7 @@
 require "application_system_test_case"
 
 class ProjectsTest < ApplicationSystemTestCase
-  def test_admins_can_create_account
+  def test_admins_can_create_project
     FactoryBot.create(:user, :admin, email: "hi@example.com", password: "hello")
 
     visit root_path
