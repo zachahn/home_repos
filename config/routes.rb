@@ -8,7 +8,7 @@ Rails.application.routes.draw do
         constraints: { path: /.*/ }
       resources :commits, param: :hash, only: [:show]
       resources :branches, param: :name, only: [:index]
-      resources :files, param: :committish, only: [:index, :show]
+      resources :files, param: :committish, only: %i[index show]
 
       post "backup", to: "backups#create"
     end

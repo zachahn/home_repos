@@ -4,13 +4,21 @@ class FilesControllerTest < ActionDispatch::IntegrationTest
   def test_redirects_to_default_branch
     project = FactoryBot.create(:project, name: "two_branches")
     get(project_files_path(project))
-    assert_redirected_to(controller: "files", action: "show", committish: "master")
+    assert_redirected_to(
+      controller: "files",
+      action: "show",
+      committish: "master"
+    )
   end
 
   def test_redirects_to_default_branch_if_empty_repo
     project = FactoryBot.create(:project, name: "zero_commits")
     get(project_files_path(project))
-    assert_redirected_to(controller: "files", action: "show", committish: "master")
+    assert_redirected_to(
+      controller: "files",
+      action: "show",
+      committish: "master"
+    )
   end
 
   def test_lists_all_files_of_master_branch
