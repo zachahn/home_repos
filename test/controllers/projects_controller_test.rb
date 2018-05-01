@@ -59,4 +59,26 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     get(project_url(name: "one_commit"))
     assert_match(/first\.txt/, @response.body)
   end
+
+  def test_only_admin_can_create_project
+    assert_difference(-> { Project.all.size }, 0) do
+      post(projects_url,
+        params: { project: { name: "hi", description: "lol", export: "true" } }
+      )
+    end
+
+    assert_difference(-> { Project.all.size }, 0) do
+      login_as(FactoryBot.create(:user))
+      post(projects_url,
+        params: { project: { name: "hi", description: "lol", export: "true" } }
+      )
+    end
+
+    assert_difference(-> { Project.all.size }, 1) do
+      login_as(FactoryBot.create(:user, :admin))
+      post(projects_url,
+        params: { project: { name: "hi", description: "lol", export: "true" } }
+      )
+    end
+  end
 end
