@@ -1,6 +1,4 @@
 class GrackAuthMiddleware
-  PLAIN_TYPE = { "Content-Type" => "text/plain" }
-
   def initialize(app)
     @app = app
   end
@@ -59,19 +57,5 @@ class GrackAuthMiddleware
     }
 
     [401, headers, ["Unauthorized"]]
-  end
-
-  def require_authentication?(env, project)
-    direction = env.fetch("grack.direction")
-
-    if !project.export
-      return true
-    end
-
-    if direction == :push
-      return true
-    end
-
-    false
   end
 end
