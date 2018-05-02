@@ -7,40 +7,42 @@ class GrackAuthMiddleware
     helper = GrackWrapperHelper.new(env)
     access_control = AccessControl.new(helper.current_project)
 
-    if helper.current_project.export
-      if env["grack.direction"] == :pull
-        return @app.call(env)
-      elsif env["grack.direction"] == :push
-        if access_control.writable?(helper.current_user)
-          return @app.call(env)
-        end
-
-        if helper.current_user.is_a?(User)
-          return not_found
-        end
-
-        return please_authenticate
-      end
-    else
-      if env["grack.direction"] == :pull
-        if access_control.readable?(helper.current_user)
-          return @app.call(env)
-        end
-      elsif env["grack.direction"] == :push
-        if access_control.writable?(helper.current_user)
-          return @app.call(env)
-        end
-      end
-
-      if helper.current_user.is_a?(User)
-        return not_found
-      else
-        return please_authenticate
-      end
+    if env["grack.direction"] == :pull
+      handle_pulls(helper, access_control, @app, env)
+    elsif env["grack.direction"] == :push
+      handle_pushes(helper, access_control, @app, env)
     end
   end
 
   private
+
+  def handle_pulls(helper, access_control, app, env)
+    if helper.current_project.export
+      return app.call(env)
+    else
+      if access_control.readable?(helper.current_user)
+        return app.call(env)
+      end
+    end
+
+    handle_unauthorized(helper)
+  end
+
+  def handle_pushes(helper, access_control, app, env)
+    if access_control.writable?(helper.current_user)
+      return app.call(env)
+    end
+
+    handle_unauthorized(helper)
+  end
+
+  def handle_unauthorized(helper)
+    if helper.current_user.is_a?(User)
+      return not_found
+    end
+
+    please_authenticate
+  end
 
   def not_found
     headers = {
