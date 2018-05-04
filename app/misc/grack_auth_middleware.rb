@@ -55,7 +55,7 @@ class GrackAuthMiddleware
   def please_authenticate
     headers = {
       "Content-Type" => "text/plain",
-      "WWW-Authenticate" => "Basic realm=HomeRepos",
+      "WWW-Authenticate" => "Basic realm=#{Settings.site_name}",
     }
 
     [401, headers, ["Unauthorized"]]
