@@ -23,8 +23,7 @@ class ProjectsController < ApplicationController
 
   def new
     if !current_user.admin?
-      flash.alert = "Access denied"
-      redirect_to root_path
+      redirect_to root_path, alert: "Access denied"
       return
     end
 
@@ -33,8 +32,7 @@ class ProjectsController < ApplicationController
 
   def create
     if !current_user.admin?
-      flash.alert = "Access denied"
-      redirect_to root_path
+      redirect_to root_path, alert: "Access denied"
       return
     end
 
