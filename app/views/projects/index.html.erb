@@ -1,16 +1,14 @@
-<div class="layout">
-  <div class="layout__12">
-    <ul class="projects">
-      <% @projects.each do |project| %>
-        <li>
-          <%= render partial: "project_export_icon",
-            locals: { project: project } %>
-          <%= link_to(project.name, project) %>
-          <% if current_user.admin? %>
-            <%= link_to("Backup", project_backup_path(project), method: :post) %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-</div>
+<%= layout do %>
+  <ul class="projects">
+    <% @projects.each do |project| %>
+      <li>
+        <%= render partial: "project_export_icon",
+          locals: { project: project } %>
+        <%= link_to(project.name, project) %>
+        <% if current_user.admin? %>
+          <%= link_to("Backup", project_backup_path(project), method: :post) %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

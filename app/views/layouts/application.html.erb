@@ -10,36 +10,30 @@
   </head>
 
   <body>
-    <div class="layout">
-      <div class="layout__12">
-        <ul class="masthead">
-          <li><h1 class="masthead__title"><%= link_to(Settings.site_name, root_path) %></h1></li>
-          <% if logged_in? %>
-            <% if current_user.admin? %>
-              <li><%= link_to("New project", new_project_path) %></li>
-            <% end %>
-            <li><%= link_to("Log out", session_path, method: :delete) %></li>
-          <% else %>
-            <li><%= link_to("Log in", new_session_path) %></li>
+    <%= layout do %>
+      <ul class="masthead">
+        <li><h1 class="masthead__title"><%= link_to(Settings.site_name, root_path) %></h1></li>
+        <% if logged_in? %>
+          <% if current_user.admin? %>
+            <li><%= link_to("New project", new_project_path) %></li>
           <% end %>
-        </ul>
-      </div>
-    </div>
-    <div class="layout">
-      <div class="layout__12">
-        <% flash.each do |name, msg| %>
-          <div class="flash-message flash-message--<%= name %>">
-            <%= msg %>
-          </div>
+          <li><%= link_to("Log out", session_path, method: :delete) %></li>
+        <% else %>
+          <li><%= link_to("Log in", new_session_path) %></li>
         <% end %>
-      </div>
-    </div>
-    <%= yield %>
-    <div class="layout">
-      <div class="layout__12">
-        <div class="footer">
+      </ul>
+    <% end %>
+    <%= layout do %>
+      <% flash.each do |name, msg| %>
+        <div class="flash-message flash-message--<%= name %>">
+          <%= msg %>
         </div>
+      <% end %>
+    <% end %>
+    <%= yield %>
+    <%= layout do %>
+      <div class="footer">
       </div>
-    </div>
+    <% end %>
   </body>
 </html>
