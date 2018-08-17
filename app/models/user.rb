@@ -15,4 +15,8 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :permissions
+
+  def user?
+    true
+  end
 end

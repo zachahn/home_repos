@@ -29,6 +29,22 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_match(/baz_project/, @response.body)
   end
 
+  def test_logged_in_users_see_their_own_projects
+    FactoryBot.create(:project, name: "foo_project")
+    FactoryBot.create(:project, :private, name: "bar_project")
+    personal_project = FactoryBot.create(:project, :private, name: "baz_project")
+    user = FactoryBot.create(:user)
+    Permission.create!(project: personal_project, user: user)
+
+    login_as(user)
+    get(projects_url)
+
+    assert_response(:success)
+    refute_match(/foo_project/, @response.body)
+    refute_match(/bar_project/, @response.body)
+    assert_match(/baz_project/, @response.body)
+  end
+
   def test_dont_show_if_not_export
     FactoryBot.create(:project, :private, name: "one_commit")
     admin = FactoryBot.create(:user, :admin)

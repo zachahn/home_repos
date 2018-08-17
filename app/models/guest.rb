@@ -12,6 +12,10 @@ class Guest
     false
   end
 
+  def user?
+    false
+  end
+
   def password
   end
 

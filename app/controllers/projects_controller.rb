@@ -3,6 +3,8 @@ class ProjectsController < ApplicationController
     @projects =
       if current_user.admin?
         Project.all
+      elsif current_user.user?
+        Project.joins(:permissions)
       else
         Project.where(export: true)
       end
