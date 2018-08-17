@@ -17,6 +17,7 @@
 #
 
 class Project < ApplicationRecord
+  has_many :permissions
   validates :name, presence: true, format: /\A[a-zA-Z0-9_-]+\z/
 
   def path
