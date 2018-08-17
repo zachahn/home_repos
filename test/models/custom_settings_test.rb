@@ -2,7 +2,7 @@ require "test_helper"
 
 class CustomSettingsTest < ActiveSupport::TestCase
   def test_prefers_settings
-    FakeFS do
+    FakeFS.with_fresh do
       File.write("defaults.yml", <<~DEFAULTS)
         ---
         key: value
@@ -23,7 +23,7 @@ class CustomSettingsTest < ActiveSupport::TestCase
   end
 
   def test_falls_back_to_overrides_if_settings_file_doesnt_exist
-    FakeFS do
+    FakeFS.with_fresh do
       File.write("defaults.yml", <<~DEFAULTS)
         ---
         key: value
@@ -39,7 +39,7 @@ class CustomSettingsTest < ActiveSupport::TestCase
   end
 
   def test_disallows_new_keys
-    FakeFS do
+    FakeFS.with_fresh do
       File.write("defaults.yml", <<~DEFAULTS)
         ---
         key: value
