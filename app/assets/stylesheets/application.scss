@@ -12,6 +12,7 @@ $color-black: #111;
 $color-white: #fff;
 $color-superlight: #dedede;
 $color-pink: #f2ddde;
+$color-blue: #0d0dc3;
 $color-lightblue: #89abe3;
 
 $font-sans: "Helvetica Neue", "Helvetica", sans-serif;
@@ -55,6 +56,7 @@ a {
   display: inline-block;
   position: relative;
   text-decoration: none;
+  color: $color-blue;
 }
 a::after {
   content: "";
